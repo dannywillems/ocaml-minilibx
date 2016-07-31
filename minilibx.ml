@@ -1,17 +1,50 @@
 open Ctypes
 open Foreign
 
-type mlx_ptr = unit ptr
-type mlx_win = unit ptr
+type mlx_core = unit ptr
 
-let mlx_ptr : mlx_ptr typ = ptr void
-let mlx_win : mlx_win typ = ptr void
+module Core =
+  struct
+    type t = unit ptr
 
-let mlx_init =
-  foreign "mlx_init" (void @-> returning mlx_ptr)
+    let t : t typ = ptr void
 
-let mlx_new_window =
-  foreign "mlx_new_window" (mlx_ptr @-> int @-> int @-> string @-> returning mlx_win)
+    let init =
+      foreign "mlx_init" (void @-> returning t)
+  end
 
-let mlx_loop =
-  foreign "mlx_loop" (mlx_ptr @-> returning void)
+module Window =
+  struct
+    type t = unit ptr
+
+    let t : t typ = ptr void
+
+    let new_ =
+      foreign
+        "mlx_new_window"
+        (Core.t @-> int @-> int @-> string @-> returning t)
+
+    let clear =
+      foreign
+        "mlx_clear_window"
+        (t @-> Core.t @-> returning int)
+
+    let loop =
+      foreign "mlx_loop" (Core.t @-> returning void)
+  end
+
+module Pixel =
+  struct
+    let put =
+      foreign
+        "mlx_pixel_put"
+        (Core.t @-> Window.t @-> int @-> int @-> returning int)
+  end
+(*
+module Color =
+  struct
+    type t = int
+    let t_of_int x = x
+    let int_to_t x = x
+  end
+*)

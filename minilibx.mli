@@ -1,10 +1,26 @@
-type mlx_ptr
-type mlx_win
+module Core :
+  sig
+    type t
 
-val mlx_ptr : mlx_ptr Ctypes.typ
-val mlx_win : mlx_win Ctypes.typ
+    val t : t Ctypes.typ
 
-val mlx_init : unit -> mlx_ptr
-val mlx_new_window : mlx_ptr -> int -> int -> string -> mlx_win
+    val init : unit -> t
+  end
 
-val mlx_loop : mlx_ptr -> unit
+module Window :
+  sig
+    type t
+
+    val t : t Ctypes.typ
+
+    val new_ : Core.t -> int -> int -> string -> t
+
+    val clear : t -> Core.t -> int
+
+    val loop : Core.t -> unit
+  end
+
+module Pixel :
+  sig
+    val put : Core.t -> Window.t -> int -> int -> int
+  end
