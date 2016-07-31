@@ -1,4 +1,4 @@
 let () =
-  let i = Minilibx.mlx_init () in
-  let w = Minilibx.mlx_new_window i 640 480 "Hello, World" in
-  Minilibx.mlx_loop i
+  let i = Minilibx.Core.init () in
+  let w = Minilibx.Window.new_ i 640 480 "Hello, World" in
+  Minilibx.Window.loop i
