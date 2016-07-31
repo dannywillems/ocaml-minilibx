@@ -6,21 +6,21 @@
 #*   By: dwillems <dwillems@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/07/31 06:15:42 by dwillems          #+#    #+#             *#
-#*   Updated: 2016/07/31 16:29:12 by dwillems         ###   ########.fr       *#
+#*   Updated: 2016/07/31 16:37:08 by dwillems         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
-CC_BYT		= ocamlfind ocamlc
-CC_OPT		= ocamlfind ocamlopt
-CC			= $(CC_BYT)
+CC_BYT		=	ocamlfind ocamlc
+CC_OPT		=	ocamlfind ocamlopt
+CC			=	$(CC_BYT)
 
-MLI			= minilibx.mli
-ML			= minilibx.ml
+MLI			=	minilibx.mli
+ML			=	minilibx.ml
 
-CMI			= $(patsubst %.mli,%.cmi,$(MLI))
-CMX			= $(patsubst %.ml,%.cmx,$(ML))
-CMO			= $(patsubst %.ml,%.cmo,$(ML))
-INC_MLX		= /usr/local/lib
+CMI			=	$(patsubst %.mli,%.cmi,$(MLI))
+CMX			=	$(patsubst %.ml,%.cmx,$(ML))
+CMO			=	$(patsubst %.ml,%.cmo,$(ML))
+INC_MLX		=	/usr/local/lib
 
 PKG			= -package ctypes.foreign -linkpkg
 CLIB		=	-cclib "-Wl,--whole-archive" \
@@ -31,15 +31,15 @@ CLIB		=	-cclib "-Wl,--whole-archive" \
 				-cclib -lX11 \
 				-cclib -lXext
 
-COPT		= -ccopt -L$(INC_MLX)
+COPT		=	-ccopt -L$(INC_MLX)
 
-ML_EXE		=	hello.ml
+ML_EXE		=	test.ml
 BYT			=	$(patsubst %.ml,%.byte,$(ML_EXE))
 OPT			=	$(patsubst %.ml,%.native,$(ML_EXE))
-OBJ			=	$(patsubst %.ml,%.o,$(ML_EXE)) $(patsubst %.ml,%.o,$(ML)) \
-				$(patsubst %.ml,%.cmi,$(ML_EXE)) \
-				$(patsubst %.ml,%.cmo,$(ML_EXE)) \
-				$(patsubst %.ml,%.cmx,$(ML_EXE))
+OBJ_TEST	=	$(patsubst %.ml,test/%.o,$(ML_EXE)) \
+				$(patsubst %.ml,test/%.cmi,$(ML_EXE)) \
+				$(patsubst %.ml,test/%.cmo,$(ML_EXE)) \
+				$(patsubst %.ml,test/%.cmx,$(ML_EXE))
 
 all: $(EXE)
 
@@ -53,16 +53,15 @@ all: $(EXE)
 	$(CC_BYT) -c $(PKG) $<
 
 $(BYT): $(CMI) $(CMO)
-	$(CC_BYT) $(PKG) $(COPT) $(CLIB) $(CMO) -custom $(ML_EXE) -o $@
+	$(CC_BYT) $(PKG) $(COPT) $(CLIB) $(CMO) -custom test/$(ML_EXE) -o test/$@
 
 $(OPT): $(CMI) $(CMX)
-	$(CC_OPT) -o $@ $(COPT) $(CLIB) $(PKG) $(CMX) $(ML_EXE)
+	$(CC_OPT) -o $@ $(COPT) $(CLIB) $(PKG) $(CMX) test/$(ML_EXE) -o test/$@
 
 clean:
-	echo $(CMO)
-	$(RM) $(CMI) $(CMX) $(CMO) $(OBJ)
+	$(RM) $(CMI) $(CMX) $(CMO)
 
 fclean: clean
-	$(RM) $(BYT) $(OPT)
+	$(RM) test/$(BYT) test/$(OPT) $(OBJ_TEST)
 
 re: fclean all
