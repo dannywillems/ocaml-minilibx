@@ -1,5 +1,7 @@
 # ocaml-minilibx
 
+**Not finished**
+
 Bindings OCaml to minilibx library.
 
 ## What is minilibx?
@@ -20,6 +22,26 @@ for Mac OSX).
 Here some tutorials and articles (in French):
 * [Installation and basic usage](https://achedeuzot.me/2014/12/20/installer-la-minilibx/)
 * [Manual](http://thomas.tissotdupont.free.fr/MinilibX%20Manual/)
+
+## How to install?
+
+You can use opam to install:
+```
+opam pin add ocaml-minilibx https://github.com/dannywillems/ocaml-minilibx.git
+```
+
+Else, a Makefile is provided and you need ocamlfind to install.
+
+```
+make build
+make install
+```
+
+The library is available in native and bytecode.
+
+## Binding organization/documentation
+
+TODO
 
 ## Licence
 
@@ -49,6 +71,25 @@ Ici des articles et des tutoriels (en français):
 
 * [Installation et utilisation basique](https://achedeuzot.me/2014/12/20/installer-la-minilibx/)
 * [Manuel](http://thomas.tissotdupont.free.fr/MinilibX%20Manual/)
+
+## Comment installer?
+
+Vous pouvez utiliser opam pour installer:
+```
+opam pin add ocaml-minilibx https://github.com/dannywillems/ocaml-minilibx.git
+```
+
+Sinon, un Makefile est fourni et vous avez besoin d'ocamlfind pour installer.
+```
+make build
+make install
+```
+
+La librairie est disponible en natif et en bytecode.
+
+## Organisation/documentation du binding.
+
+TODO
 
 ## License
 
