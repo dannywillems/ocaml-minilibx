@@ -6,13 +6,15 @@
 #*   By: dwillems <dwillems@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/07/31 06:15:42 by dwillems          #+#    #+#             *#
-#*   Updated: 2016/07/31 16:37:08 by dwillems         ###   ########.fr       *#
+#*   Updated: 2016/07/31 17:16:52 by dwillems         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
-CC_BYT		=	ocamlfind ocamlc
-CC_OPT		=	ocamlfind ocamlopt
-CC			=	$(CC_BYT)
+
+CC_BYT		=	ocamlc
+CC_OPT		=	ocamlopt
+
+LIB_NAME	=	ocaml-minilibx
 
 MLI			=	minilibx.mli
 ML			=	minilibx.ml
@@ -20,9 +22,10 @@ ML			=	minilibx.ml
 CMI			=	$(patsubst %.mli,%.cmi,$(MLI))
 CMX			=	$(patsubst %.ml,%.cmx,$(ML))
 CMO			=	$(patsubst %.ml,%.cmo,$(ML))
+OBJ			=	$(patsubst %.ml,%.o,$(ML))
 INC_MLX		=	/usr/local/lib
 
-PKG			= -package ctypes.foreign -linkpkg
+PKG			=	-package ctypes.foreign -linkpkg
 CLIB		=	-cclib "-Wl,--whole-archive" \
 				-cclib -lmlx \
 				-cclib -lbsd \
@@ -43,25 +46,38 @@ OBJ_TEST	=	$(patsubst %.ml,test/%.o,$(ML_EXE)) \
 
 all: $(EXE)
 
+build: $(CMI) $(CMO) $(CMX)
+	ocamlfind $(CC_BYT) -a -o $(LIB_NAME).cma $(CMO)
+	ocamlfind $(CC_OPT) -a -o $(LIB_NAME).cmxa $(CMX)
+
+install: build
+	ocamlfind install $(LIB_NAME) META $(LIB_NAME).cma $(LIB_NAME).cmxa $(CMI)
+
+remove:
+	ocamlfind remove $(LIB_NAME)
+
 %.cmx:%.ml
-	$(CC_OPT) -c $(PKG) $<
+	ocamlfind $(CC_OPT) -c $(PKG) $<
 
 %.cmo:%.ml
-	$(CC_BYT) -c $(PKG) $<
+	ocamlfind $(CC_BYT) -c $(PKG) $<
 
 %.cmi:%.mli
-	$(CC_BYT) -c $(PKG) $<
+	ocamlfind $(CC_BYT) -c $(PKG) $<
 
 $(BYT): $(CMI) $(CMO)
-	$(CC_BYT) $(PKG) $(COPT) $(CLIB) $(CMO) -custom test/$(ML_EXE) -o test/$@
+	ocamlfind $(CC_BYT) $(PKG) $(COPT) $(CLIB) $(CMO) -custom \
+		test/$(ML_EXE) -o test/$@
 
 $(OPT): $(CMI) $(CMX)
-	$(CC_OPT) -o $@ $(COPT) $(CLIB) $(PKG) $(CMX) test/$(ML_EXE) -o test/$@
+	ocamlfind $(CC_OPT) -o $@ $(COPT) $(CLIB) $(PKG) $(CMX) \
+		test/$(ML_EXE) -o test/$@
 
 clean:
-	$(RM) $(CMI) $(CMX) $(CMO)
+	$(RM) $(CMI) $(CMX) $(CMO) $(OBJ)
 
 fclean: clean
 	$(RM) test/$(BYT) test/$(OPT) $(OBJ_TEST)
+	$(RM) $(LIB_NAME).cmxa $(LIB_NAME).cma $(LIB_NAME).a
 
 re: fclean all

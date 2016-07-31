@@ -1,0 +1,4 @@
+version = "1.0"
+description = "Binding OCaml to minilibx"
+archive(byte) = "ocaml-minilibx.cma"
+archive(native) = "ocaml-minilibx.cmxa"
