@@ -1,0 +1,21 @@
+opam-version: "1.0"
+name:         "ocaml-minilibx"
+maintainer:   "Danny Willems <contact@danny-willems.be>"
+author:       "Danny Willems <contact@danny-willems.be>"
+
+homepage:     "https://github.com/dannywillems/ocaml-minilibx"
+bug-reports:  "https://github.com/dannywillems/ocaml-minilibx/issues"
+
+dev-repo:     "https://github.com/dannywillems/ocaml-minilibx"
+
+license:      "LGPL-3.0 with OCaml linking exception"
+
+version:      "1.0"
+
+build: [make "build"]
+install: [make "install"]
+remove: [make "remove"]
+
+depends: [
+	ctypes
+]
