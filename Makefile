@@ -6,7 +6,7 @@
 #*   By: dwillems <dwillems@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/07/31 06:15:42 by dwillems          #+#    #+#             *#
-#*   Updated: 2016/07/31 17:16:52 by dwillems         ###   ########.fr       *#
+#*   Updated: 2016/08/27 19:48:47 by dwillems         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -44,7 +44,7 @@ OBJ_TEST	=	$(patsubst %.ml,test/%.o,$(ML_EXE)) \
 				$(patsubst %.ml,test/%.cmo,$(ML_EXE)) \
 				$(patsubst %.ml,test/%.cmx,$(ML_EXE))
 
-all: $(EXE)
+all: build
 
 build: $(CMI) $(CMO) $(CMX)
 	ocamlfind $(CC_BYT) -a -o $(LIB_NAME).cma $(CMO)
